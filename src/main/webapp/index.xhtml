@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Patients</title>
+</h:head>
+<h:body style="background-color: #3b76d2;">
+
+	<h3>
+		<p:inputText id="name" value="#{mainController.model.helloMessage}" />
+	</h3>
+	<h3>
+		<h:outputLabel value="PasswordField"
+			style="font-weight:bold;color: #ffffff" />
+		<p:password id="password"/>
+
+	</h3>
+	<h4>
+		<p:button value="Sign in" icon="fa fa-check-circle-o"
+			style="margin-right:25	px;background: #ffffff; color:#3b76d2">
+		</p:button>
+	</h4>
+	<h5>
+		<p:button href="/helloWorld" value="Hello World Page"
+			style="background: #ffffff; color:#3b76d2" icon="fa fa-wechat" />
+	</h5>
+	<h5>
+		<p:calendar pattern="dd.MM.yyyy" mindate="01.07.2019"
+			maxdate="31.07.2019" />
+		<p:selectBooleanButton offLabel="No" onLabel="Yes"/>
+	</h5>
+</h:body>
+</html>

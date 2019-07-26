@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Client List</title>
+</h:head>
+
+<h:body style="background-color: #3b76d2;">
+	<h:form id="form">
+
+		<p:dataTable var="client" value="#{clientController.model.clients}"
+			selection="#{clientController.model.selectedClient}"
+			selectionMode="single" rowKey="#{client.id}"
+			binding="#{clientController.model.clientTable}" id="clientTable"
+			paginator="true"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			editable="true" editMode="cell" rowsPerPageTemplate="5,10,15">
+
+			<p:ajax event="cellEdit" listener="#{clientController.updateClient}" update="clientTable" />
+
+			<!-- Updated every column with cellEditor and facet elements (Except the boolean 1) -->
+			<p:column headerText="Id">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{client.id}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="modelInput" value="#{client.id}"
+							style="width:96%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Client Name">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{client.clientName}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{client.clientName}" style="width:96%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="PhoneNumber">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{client.phoneNumber}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{client.phoneNumber}" style="width:96%" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="IsActive">
+				<p:selectBooleanCheckbox value="#{client.active}" />
+			</p:column>
+		</p:dataTable>
+
+		<p:commandButton value="Delete selected Client"
+			onclick="PF('deleteClientDialog').show()" />
+		<p:commandButton type="button" value="Create Client"
+			onclick="PF('createClientDialog').show()" />
+		<p:commandButton value="Update DB"
+			action="clientController.updateClient" />
+
+
+		<p:dialog widgetVar="createClientDialog" id="dialog">
+			<h:panelGrid columns="2">
+				<p:outputLabel value="ClientName"/>
+				<p:inputText value="#{clientController.model.newClient.clientName}" required="true">
+				</p:inputText>
+				<p:outputLabel value="PhoneNumber" />
+				<p:inputText value="#{clientController.model.newClient.phoneNumber}" required="true"/>
+				<p:outputLabel value="Active" />
+				<p:selectBooleanCheckbox
+					value="#{clientController.model.newClient.active}" />
+
+				<p:commandButton value="Create"
+					action="#{clientController.createClient}" update="clientTable"
+					oncomplete="PF('createClientDialog').hide()" />
+			</h:panelGrid>
+		</p:dialog>
+
+		<p:dialog widgetVar="deleteClientDialog" modal="true">
+			<h:panelGrid columns="2">
+				<p:commandButton type="submit" value="Yes"
+					action="#{clientController.deleteClient}" update="clientTable"
+					oncomplete="PF('deleteClientDialog').hide()" />
+				<p:commandButton type="button" value="No"
+					oncomplete="PF('deleteClientDialog').hide()" />
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+</h:body>
+</html>
