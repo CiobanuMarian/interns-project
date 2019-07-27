@@ -7,7 +7,8 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.component.datatable.DataTable;
 
-import com.kronsoft.internship.ui.entities.PatientDto;
+import com.kronsoft.internship.ui.rest.dto.PatientDto;
+
 
 
 @ManagedBean
