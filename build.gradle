@@ -7,13 +7,20 @@ id 'war'
 repositories {
     jcenter()
     mavenCentral()
+  maven {
+		url "http://repository.primefaces.org"
+	}
+    
 }
 
 dependencies {
-
+	//Themes dependency for UI
+	compile group: 'org.primefaces.themes', name: 'all-themes', version: '1.0.10'
 	compile group:'org.primefaces',name:'primefaces',version:'6.2'
+	
 	compile group: 'com.sun.faces', name: 'jsf-api', version: '2.2.19'
 	compile group: 'com.sun.faces', name: 'jsf-impl', version: '2.2.19'
+	
 	
 	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
 	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
