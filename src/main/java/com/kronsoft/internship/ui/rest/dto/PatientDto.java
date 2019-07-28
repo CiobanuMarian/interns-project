@@ -18,7 +18,7 @@ public class PatientDto {
 
 	private String pin;
 
-	private PatientSex Sex;
+	private PatientSex sex;
 
 	private String city;
 
@@ -77,11 +77,11 @@ public class PatientDto {
 	}
 
 	public PatientSex getSex() {
-		return Sex;
+		return sex;
 	}
 
 	public void setSex(PatientSex sex) {
-		Sex = sex;
+		this.sex = sex;
 	}
 
 	public String getCity() {

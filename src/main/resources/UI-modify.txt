@@ -1,0 +1,2 @@
+center the text 
+style="display: block; width:100%; text-align:center;

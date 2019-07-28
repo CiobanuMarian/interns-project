@@ -16,7 +16,7 @@ repositories {
 dependencies {
 	//Themes dependency for UI
 	compile group: 'org.primefaces.themes', name: 'all-themes', version: '1.0.10'
-	compile group:'org.primefaces',name:'primefaces',version:'6.2'
+	compile group:'org.primefaces',name:'primefaces',version:'7.0'
 	
 	compile group: 'com.sun.faces', name: 'jsf-api', version: '2.2.19'
 	compile group: 'com.sun.faces', name: 'jsf-impl', version: '2.2.19'

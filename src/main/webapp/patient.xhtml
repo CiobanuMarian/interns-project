@@ -14,23 +14,57 @@
 	margin-left: 8px;
 }
 </style>
-<h:body >
+<h:body>
 	<h:form id="form">
-
-		<p:menubar style="">
+		<p:tabMenu style="margin-left:10%">
 			<p:menuitem value="Add Patient" onclick="PF('createDialog').show()" />
 			<p:menuitem value="Appoiments" url="/appoiments" />
-
 			<f:facet name="options">
 				<p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search" />
 			</f:facet>
-		</p:menubar>
+		</p:tabMenu>
 
+		<!-- Patient creation pop-up  -->
+		<p:dialog header="Create Patient" widgetVar="createDialog"
+			minHeight="40" modal="true">
+			<p:panelGrid columns="2">
+				<h:outputText value="First Name" />
+				<p:inputText value="#{patientController.model.newPatient.firstName}" />
 
-		<p:dialog header="Create Patient" widgetVar="createDialog" minHeight="40" modal="true">
-			<h:outputText value="Resistance to PrimeFaces is futile!" />
+				<h:outputText value="Last Name" />
+				<p:inputText value="#{patientController.model.newPatient.lastName}" />
+
+				<h:outputText value="Birth Date" />
+				<p:datePicker id="popup"
+					value="#{patientController.model.newPatient.birthDate}" />
+
+				<h:outputText value="PIN" />
+				<p:inputText value="#{patientController.model.newPatient.pin}" />
+
+				<h:outputText value="Sex" />
+				<p:selectOneMenu value="#{patientController.model.newPatient.sex}">
+					<f:selectItems value="#{patientController.model.sexes}" />
+				</p:selectOneMenu>
+				<h:outputText value="City" />
+				<p:inputText value="#{patientController.model.newPatient.city}" />
+
+				<h:outputText value="Country" />
+				<p:inputText value="#{patientController.model.newPatient.country}" />
+
+				<h:outputText value="Phone Number" />
+				<p:inputText
+					value="#{patientController.model.newPatient.phoneNumber}" />
+
+				<p:commandButton value="Create" style="margin-left:15%"
+					action="#{patientController.createPatient}"
+					oncomplete="PF('createDialog').hide();" update="patientTable, msgs" />
+				<p:commandButton value="Cancel" onclick="PF('createDialog').hide();"
+					style="margin-left:25%" />
+
+			</p:panelGrid>
 		</p:dialog>
-		
+
+
 		<p:growl id="msgs" showDetail="true" />
 		<p:dataTable var="patient" value="#{patientController.model.patients}"
 			selection="#{patientController.model.selectedPatient}"
@@ -39,22 +73,22 @@
 			paginator="true"
 			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			editable="true" rowsPerPageTemplate="5,10,15"
-			style="width:80%; margin-left:10% ">
+			style="width:80%; margin-left:10% " rowIndexVar="rowId">
 
 			<p:ajax event="rowEdit" listener="#{patientController.onRowEdit}"
 				update=":form:msgs" />
 			<p:ajax event="rowEditCancel"
 				listener="#{patientController.onRowCancel}" update=":form:msgs" />
 
-			<!-- Updated every column with cellEditor and facet elements (Except the boolean 1) -->
+			
 			<p:column headerText="Id">
 				<p:cellEditor>
 					<f:facet name="output">
-						<h:outputText value="#{patient.id}" />
+						<h:outputText value="#{patient.id}"  />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText id="modelInput" value="#{patient.id}"
-							style="width:96%" />
+						<p:inputText id="modelInput" value="#{patient.id}" readonly="true"
+						/>
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -112,7 +146,9 @@
 						<h:outputText value="#{patient.sex}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText value="#{patient.sex}" style="width:96%" />
+						<h:selectOneMenu value="#{patient.sex}" style="width:100%">
+							<f:selectItems value="#{patientController.model.sexes}" />
+						</h:selectOneMenu>
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -150,7 +186,27 @@
 			<p:column style="width:35px">
 				<p:rowEditor />
 			</p:column>
+			<p:column>
+				<p:commandLink oncomplete="PF('deleteDialog').show();" style="display: block; width:100%; text-align:center;" >
+					<h:panelGroup styleClass="pi pi-trash" />
+					<f:setPropertyActionListener value="#{patient}"
+						target="#{patientController.model.selectedPatient}" />
+				</p:commandLink>
+			</p:column>
 		</p:dataTable>
+
+		<p:dialog header="Confirm Delete?" widgetVar="deleteDialog"
+			minHeight="40" modal="true">
+			<p:commandButton value="Yes" style="margin-right:20px;"
+				action="#{patientController.deletePatient}"
+				oncomplete="PF('deleteDialog').hide();" update="patientTable msgs">
+			</p:commandButton>
+
+			<p:commandButton value="No" oncomplete="PF('deleteDialog').hide();"
+				style="margin-right:20px;" />
+		</p:dialog>
+
+
 
 	</h:form>
 </h:body>

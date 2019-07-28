@@ -7,9 +7,8 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.component.datatable.DataTable;
 
+import com.kronsoft.internship.ui.entities.enums.PatientSex;
 import com.kronsoft.internship.ui.rest.dto.PatientDto;
-
-
 
 @ManagedBean
 @ViewScoped
@@ -19,7 +18,6 @@ public class PatientModel {
 	private DataTable patientTable;
 
 	private PatientDto newPatient = new PatientDto();
-
 	private boolean initFromDB;
 
 	private PatientDto selectedPatient;
@@ -64,6 +62,8 @@ public class PatientModel {
 		this.selectedPatient = selectedPatient;
 	}
 
-	
+	public PatientSex[] getSexes() {
+		return PatientSex.values();
+	}
 
 }
