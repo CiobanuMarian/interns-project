@@ -66,4 +66,11 @@ public class PatientModel {
 		return PatientSex.values();
 	}
 
+
+//	public List<Long> getIds(){
+//		List<Long> ids= new ArrayList<>();
+//		patients.forEach(patient->ids.add(patient.getId()));
+//		return ids;
+//	}
+	
 }

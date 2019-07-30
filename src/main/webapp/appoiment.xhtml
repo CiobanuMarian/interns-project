@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+	<title>Appoiments List</title>
+</h:head>
+
+<style type="text/css">
+.ui-row-editor .ui-row-editor-pencil {
+	margin-left: 8px;
+}
+</style>
+<h:body>
+	<h:form id="form">
+		<p:tabMenu style="margin-left:10%; width:80%">
+			<p:menuitem value="Add Appoiment"
+				onclick="PF('createAppoimentDialog').show()" />
+			<p:menuitem value="Patients" url="/patients-ui/patient.xhtml" />
+		</p:tabMenu>
+		<!-- Appoiment creation pop-up -->
+		<p:dialog header="Create Appoiment" widgetVar="createAppoimentDialog"
+			minHeight="40" modal="true">
+			<p:panelGrid columns="2">
+				<h:outputText value="Appoiment Type" />
+				<p:selectOneMenu
+					value="#{appoimentController.model.newAppoiment.appoimentType}">
+					<f:selectItems value="#{appoimentController.model.types}" />
+				</p:selectOneMenu>
+				<h:outputText value="Appoiment Status" />
+				<p:selectOneMenu
+					value="#{appoimentController.model.newAppoiment.appoimentStatus}">
+					<f:selectItems value="#{appoimentController.model.statuses}" />
+				</p:selectOneMenu>
+				<h:outputText value="Start Time" />
+				<p:datePicker
+					value="#{appoimentController.model.newAppoiment.startTime}" />
+
+				<h:outputText value="End Time" />
+				<p:datePicker
+					value="#{appoimentController.model.newAppoiment.endTime}" />
+
+
+				<h:outputText value="Appoiment Description" />
+				<p:inputText
+					value="#{appoimentController.model.newAppoiment.appoimentDescription}" />
+
+				<h:outputText value="Patient ID" />
+				<p:selectOneMenu
+					value="#{appoimentController.model.newAppoiment.patient}"
+					converter="patientConverter">
+					<!-- We can set the itemLabel to any property from patient, maybe we can merge firstName and lastName somehow -->
+					<f:selectItems value="#{patientController.model.patients}"
+						var="patients" itemLabel="#{patients.id}" />
+				</p:selectOneMenu>
+				<p:commandButton value="Create" style="margin-left:15%"
+					action="#{appoimentController.createAppoiment}"
+					oncomplete="PF('createDialog').hide();"
+					update="appoimentsTable, msgs" />
+				<p:commandButton value="Cancel" onclick="PF('createDialog').hide();"
+					style="margin-left:25%" />
+
+			</p:panelGrid>
+		</p:dialog>
+
+		<p:growl id="msgs" showDetail="true" />
+		<p:dataTable var="appoiment"
+			value="#{appoimentController.model.appoiments}"
+			selection="#{appoimentController.model.selectedAppoiment}"
+			selectionMode="single" rowKey="#{appoiment.id}"
+			binding="#{appoimentController.model.appoimentsTable}"
+			id="appoimentsTable" paginator="true"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			editable="true" rowsPerPageTemplate="5,10,15"
+			style="width:80%; margin-left:10% " rowIndexVar="rowId">
+
+			<p:ajax event="rowEdit" listener="#{appoimentController.onRowEdit}"
+				update=":form:msgs" />
+			<p:ajax event="rowEditCancel"
+				listener="#{appoimentController.onRowCancel}" update=":form:msgs" />
+
+
+			<p:column headerText="Id">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{appoiment.id}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="modelInput" value="#{appoiment.id}"
+							readonly="true" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Appoiment Type">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{appoiment.appoimentType}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:selectOneMenu value="#{appoiment.appoimentType}">
+							<f:selectItems value="#{appoimentController.model.types}" />
+						</p:selectOneMenu>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Appoiment Status">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{appoiment.appoimentStatus}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:selectOneMenu value="#{appoiment.appoimentStatus}">
+							<f:selectItems value="#{appoimentController.model.statuses}" />
+						</p:selectOneMenu>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<!--  The date pickers form the dataTable are hidden under the row somehow,
+			 when u try to edit you can see a small popup under it which is the calendar -->
+			<p:column headerText="Start Time">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{appoiment.startTime}">
+							<f:convertDateTime type="date" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:datePicker value="#{appoiment.startTime}" showTime="true" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="End Time">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{appoiment.endTime}">
+							<f:convertDateTime type="date" />
+						</h:outputText>
+					</f:facet>
+					<f:facet name="input">
+						<p:datePicker value="#{appoiment.endTime}" showTime="true" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Appoiment Description" style="width:100px">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{appoiment.appoimentDescription}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{appoiment.appoimentDescription}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Patient ID">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{appoiment.patient.id}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText value="#{appoiment.patient.id}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column style="width:35px">
+				<p:rowEditor />
+			</p:column>
+			<p:column>
+				<p:commandLink oncomplete="PF('deleteDialog').show();"
+					style="display: block; width:100%; text-align:center;">
+					<h:panelGroup styleClass="pi pi-trash" />
+					<f:setPropertyActionListener value="#{patient}"
+						target="#{appoimentController.model.selectedAppoiment}" />
+				</p:commandLink>
+			</p:column>
+		</p:dataTable>
+
+		<p:dialog header="Confirm Delete?" widgetVar="deleteDialog"
+			minHeight="40" modal="true">
+			<p:commandButton value="Yes" style="margin-right:20px;"
+				action="#{appoimentController.deleteAppoiment}"
+				oncomplete="PF('deleteDialog').hide();"
+				update="appoimentsTable msgs">
+			</p:commandButton>
+
+			<p:commandButton value="No" oncomplete="PF('deleteDialog').hide();"
+				style="margin-right:20px;" />
+		</p:dialog>
+
+	</h:form>
+</h:body>
+</html>

@@ -1,5 +1,6 @@
 package com.kronsoft.internship.ui.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -7,8 +8,10 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.component.datatable.DataTable;
 
+import com.kronsoft.internship.ui.entities.enums.AppoimentStatus;
+import com.kronsoft.internship.ui.entities.enums.AppoimentType;
 import com.kronsoft.internship.ui.rest.dto.AppoimentDto;
-
+import com.kronsoft.internship.ui.rest.dto.PatientDto;
 
 @ManagedBean
 @ViewScoped
@@ -62,5 +65,20 @@ public class AppoimentModel {
 	public void setSelectedAppoiment(AppoimentDto selectedAppoiment) {
 		this.selectedAppoiment = selectedAppoiment;
 	}
+
+	public AppoimentType[] getTypes() {
+		return AppoimentType.values();
+	}
+
+	public AppoimentStatus[] getStatuses() {
+		return AppoimentStatus.values();
+	}
 	
+//	public List<String>getNames(){
+//		PatientModel patientModel;
+//		List<PatientDto> patients=patientModel.getPatients();
+//		List<String > names = new ArrayList<>();
+//		patients.forEach(patient -> names.add(patient.getFirstName()+ " " + patient.getLastName()));
+//		return names;
+//	}
 }

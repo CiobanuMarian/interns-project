@@ -16,12 +16,9 @@
 </style>
 <h:body>
 	<h:form id="form">
-		<p:tabMenu style="margin-left:10%">
+		<p:tabMenu style="margin-left:10%; width:80%">
 			<p:menuitem value="Add Patient" onclick="PF('createDialog').show()" />
-			<p:menuitem value="Appoiments" url="/appoiments" />
-			<f:facet name="options">
-				<p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search" />
-			</f:facet>
+			<p:menuitem value="Appoiments" url="/patients-ui/appoiment.xhtml" />
 		</p:tabMenu>
 
 		<!-- Patient creation pop-up  -->
@@ -60,10 +57,44 @@
 					oncomplete="PF('createDialog').hide();" update="patientTable, msgs" />
 				<p:commandButton value="Cancel" onclick="PF('createDialog').hide();"
 					style="margin-left:25%" />
-
 			</p:panelGrid>
 		</p:dialog>
 
+		<!-- Appoiment creation pop-up 
+		Atm not fully working, the users id is not set on the appoiment, will fix it later -->
+		<p:dialog header="Create Appoiment" widgetVar="createAppoimentDialog"
+			minHeight="40" modal="true">
+			<p:panelGrid columns="2">
+				<h:outputText value="Appoiment Type" />
+				<p:selectOneMenu
+					value="#{appoimentController.model.newAppoiment.appoimentType}">
+					<f:selectItems value="#{appoimentController.model.types}" />
+				</p:selectOneMenu>
+				<h:outputText value="Appoiment Status" />
+				<p:selectOneMenu
+					value="#{appoimentController.model.newAppoiment.appoimentStatus}">
+					<f:selectItems value="#{appoimentController.model.statuses}" />
+				</p:selectOneMenu>
+
+				<h:outputText value="Start Time" />
+				<p:datePicker
+					value="#{appoimentController.model.newAppoiment.startTime}" />
+
+				<h:outputText value="End Time" />
+				<p:datePicker
+					value="#{appoimentController.model.newAppoiment.endTime}" />
+
+				<h:outputText value="Appoiment Description" />
+				<p:inputText
+					value="#{appoimentController.model.newAppoiment.appoimentDescription}" />
+
+				<p:commandButton value="Create" style="margin-left:15%"
+					action="#{appoimentController.createAppoiment}"
+					oncomplete="PF('createDialog').hide();" update="msgs" />
+				<p:commandButton value="Cancel" onclick="PF('createDialog').hide();"
+					style="margin-left:25%" />
+			</p:panelGrid>
+		</p:dialog>
 
 		<p:growl id="msgs" showDetail="true" />
 		<p:dataTable var="patient" value="#{patientController.model.patients}"
@@ -80,15 +111,13 @@
 			<p:ajax event="rowEditCancel"
 				listener="#{patientController.onRowCancel}" update=":form:msgs" />
 
-			
 			<p:column headerText="Id">
 				<p:cellEditor>
 					<f:facet name="output">
-						<h:outputText value="#{patient.id}"  />
+						<h:outputText value="#{patient.id}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText id="modelInput" value="#{patient.id}" readonly="true"
-						/>
+						<p:inputText id="modelInput" value="#{patient.id}" readonly="true" />
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -123,20 +152,19 @@
 						</h:outputText>
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText value="#{patient.birthDate}" style="width:96%">
-							<f:convertDateTime type="date" />
-						</p:inputText>
+						<p:datePicker
+							value="#{patientController.model.newPatient.birthDate}" />
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
 
-			<p:column headerText="PIN">
+			<p:column headerText="SSN" style="width:100px">
 				<p:cellEditor>
 					<f:facet name="output">
 						<h:outputText value="#{patient.pin}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText value="#{patient.pin}" style="width:96%" />
+						<p:inputText value="#{patient.pin}" />
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -146,9 +174,9 @@
 						<h:outputText value="#{patient.sex}" />
 					</f:facet>
 					<f:facet name="input">
-						<h:selectOneMenu value="#{patient.sex}" style="width:100%">
+						<p:selectOneMenu value="#{patient.sex}" style="width:100%">
 							<f:selectItems value="#{patientController.model.sexes}" />
-						</h:selectOneMenu>
+						</p:selectOneMenu>
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -187,13 +215,24 @@
 				<p:rowEditor />
 			</p:column>
 			<p:column>
-				<p:commandLink oncomplete="PF('deleteDialog').show();" style="display: block; width:100%; text-align:center;" >
+				<p:commandLink oncomplete="PF('deleteDialog').show();"
+					style="display: block; width:100%; text-align:center;">
 					<h:panelGroup styleClass="pi pi-trash" />
 					<f:setPropertyActionListener value="#{patient}"
 						target="#{patientController.model.selectedPatient}" />
 				</p:commandLink>
 			</p:column>
+			<p:column>
+				<p:commandLink oncomplete="PF('createAppoimentDialog').show();"
+					style="display: block; width:100%; text-align:center;">
+					<h:panelGroup styleClass="pi pi-save" />
+					<f:setPropertyActionListener value="#{appoimentController.model.newAppoiment.patient}"
+						target="#{patientController.model.selectedPatient}" />
+				</p:commandLink>
+			</p:column>
 		</p:dataTable>
+
+
 
 		<p:dialog header="Confirm Delete?" widgetVar="deleteDialog"
 			minHeight="40" modal="true">
@@ -205,7 +244,6 @@
 			<p:commandButton value="No" oncomplete="PF('deleteDialog').hide();"
 				style="margin-right:20px;" />
 		</p:dialog>
-
 
 
 	</h:form>
