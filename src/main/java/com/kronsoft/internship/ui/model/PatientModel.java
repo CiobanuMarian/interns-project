@@ -14,12 +14,17 @@ import com.kronsoft.internship.ui.rest.dto.PatientDto;
 @ViewScoped
 public class PatientModel {
 	private List<PatientDto> patients;
-
+	
 	private DataTable patientTable;
 
 	private PatientDto newPatient = new PatientDto();
+	
 	private boolean initFromDB;
+	
+	private PatientDto updatedPatient = new PatientDto();
 
+	private List<PatientDto> filteredPatients;
+	
 	private PatientDto selectedPatient;
 
 	public List<PatientDto> getPatients() {
@@ -66,11 +71,26 @@ public class PatientModel {
 		return PatientSex.values();
 	}
 
+	public PatientDto getUpdatedPatient() {
+		return updatedPatient;
+	}
+
+	public void setUpdatedPatient(PatientDto updatedPatient) {
+		this.updatedPatient = updatedPatient;
+	}
+
+	public List<PatientDto> getFilteredPatients() {
+		return filteredPatients;
+	}
+
+	public void setFilteredPatients(List<PatientDto> filteredPatients) {
+		this.filteredPatients = filteredPatients;
+	}
 
 //	public List<Long> getIds(){
 //		List<Long> ids= new ArrayList<>();
 //		patients.forEach(patient->ids.add(patient.getId()));
 //		return ids;
 //	}
-	
+
 }

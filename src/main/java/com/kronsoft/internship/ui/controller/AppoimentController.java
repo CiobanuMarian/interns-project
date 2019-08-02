@@ -52,7 +52,6 @@ public class AppoimentController {
 		LOGGER.info("Creating appoiment with id:"+createdAppoiment.getId());
 
 	}
-
 	public AppoimentModel getModel() {
 		return model;
 	}
@@ -61,27 +60,15 @@ public class AppoimentController {
 		this.model = model;
 	}
 
-	public void onRowEdit(RowEditEvent event) {
-
-		List<AppoimentDto> appoiments = model.getAppoiments();
-		int appoimentId = ((AppoimentDto) event.getObject()).getId().intValue();
-		Optional<AppoimentDto> updatedAppoimentDto = appoiments.stream().filter(appoiment -> appoiment.getId() == appoimentId)
-				.findFirst();
-		AppoimentDto updatedAppoiment = updatedAppoimentDto.get();
-
-		FacesMessage msg = new FacesMessage("Edited Appoiment: " + (updatedAppoiment.getId()));
-		LOGGER.info("Updating Appoiment with id: " + updatedAppoiment.getId());
-		LOGGER.info(updatedAppoiment.getAppoimentType()+ "\n"+ updatedAppoiment.getAppoimentStatus());
-		LOGGER.info("Updating Appoiment with id: " + updatedAppoiment.getId());
-		
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-		appoimentRestService.updateAppoiment(updatedAppoiment);
+	public void updateAppoiment() {
+		AppoimentDto appoimentToBeUpdated= model.getUpdatedAppoiment();
+		appoimentRestService.updateAppoiment(appoimentToBeUpdated);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Changes Saved!"));
 	}
-
-	public void onRowCancel(RowEditEvent event) {
-
-		FacesMessage msg = new FacesMessage("Edit Cancelled" + ((AppoimentDto) event.getObject()).getId());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+	
+	public void cancelUpdate() {
+		model.setUpdatedAppoiment(new AppoimentDto());
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Edit canceled!"));
 	}
 
 

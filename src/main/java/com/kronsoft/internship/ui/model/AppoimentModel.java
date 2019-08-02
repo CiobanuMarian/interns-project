@@ -17,11 +17,13 @@ import com.kronsoft.internship.ui.rest.dto.PatientDto;
 @ViewScoped
 public class AppoimentModel {
 	private List<AppoimentDto> appoiments;
-
+	
 	private DataTable appoimentsTable;
 
 	private AppoimentDto newAppoiment = new AppoimentDto();
 
+	private AppoimentDto updatedAppoiment= new AppoimentDto();
+	
 	private boolean initFromDB;
 
 	private AppoimentDto selectedAppoiment;
@@ -73,7 +75,16 @@ public class AppoimentModel {
 	public AppoimentStatus[] getStatuses() {
 		return AppoimentStatus.values();
 	}
-	
+
+	public AppoimentDto getUpdatedAppoiment() {
+		return updatedAppoiment;
+	}
+
+	public void setUpdatedAppoiment(AppoimentDto updatedAppoiment) {
+		this.updatedAppoiment = updatedAppoiment;
+	}
+
+
 //	public List<String>getNames(){
 //		PatientModel patientModel;
 //		List<PatientDto> patients=patientModel.getPatients();

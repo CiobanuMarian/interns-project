@@ -108,10 +108,10 @@ public class PatientDto {
 		this.phoneNumber = phoneNumber;
 	}
 	
-//	@Override
-//	public String toString() {
-//	    return String.valueOf(id);
-//	}
+	@Override
+	public String toString() {
+	    return String.valueOf(id);
+	}
 
 	@Override
 	public boolean equals(Object object) {

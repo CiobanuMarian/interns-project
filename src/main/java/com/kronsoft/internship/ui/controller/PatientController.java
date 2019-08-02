@@ -12,10 +12,12 @@ import javax.faces.context.FacesContext;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 import com.kronsoft.internship.ui.model.PatientModel;
 import com.kronsoft.internship.ui.rest.PatientRestService;
+import com.kronsoft.internship.ui.rest.dto.AppoimentDto;
 import com.kronsoft.internship.ui.rest.dto.PatientDto;
 
 @ManagedBean
@@ -62,28 +64,9 @@ public class PatientController {
 		this.model = model;
 	}
 
-	public void onRowEdit(RowEditEvent event) {
-
-		// Get the list, search in the the id and then update it, ex id 10 found is
-		// actualy first in the list !
-		// maybe use a stream to filter it or findById function or something similar
-
-		List<PatientDto> patients = model.getPatients();
-		int patientId = ((PatientDto) event.getObject()).getId().intValue();
-		Optional<PatientDto> updatedPatientOpt = patients.stream().filter(patient -> patient.getId() == patientId)
-				.findFirst();
-		PatientDto updatedPatient = updatedPatientOpt.get();
-
-		FacesMessage msg = new FacesMessage("Edited Patient: " + (updatedPatient.getId()));
-		LOGGER.info("Updating Patient with id: " + updatedPatient.getId());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-		patientRestService.updatePatient(updatedPatient);
+	public void updatePatient() {
+		PatientDto patientToBeUpdated= model.getUpdatedPatient();
+		patientRestService.updatePatient(patientToBeUpdated);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Changes Saved!"));
 	}
-
-	public void onRowCancel(RowEditEvent event) {
-
-		FacesMessage msg = new FacesMessage("Edit Cancelled" + ((PatientDto) event.getObject()).getId());
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
-
 }
