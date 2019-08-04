@@ -10,12 +10,77 @@
 </h:head>
 
 <style type="text/css">
+.ui-row-editor .ui-row-editor-pencil {
+	margin-left: 8px;
+}
+
+
+body .ui-dialog .ui-dialog-titlebar {
+	color: #009688;
+}
+
+body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight
+	{
+	background-color: #009688;
+	color: #fff;
+}
+
+body .ui-paginator-rpp-options .ui-widget .ui-state-default .ui-corner-left .ui-state-focus
+	{
+	
+}
+
+body .ui-selectonemenu.ui-state-focus:not .ui-state-error {
+	border-color: #009688;
+}
+
+body .ui-datepicker .ui-datepicker-calendar td a.ui-state-active {
+	background-color: #009688;
+	color: #fff;
+}
+
 body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 	color: black;
 }
 
-.ui-row-editor .ui-row-editor-pencil {
-	margin-left: 10px;
+body .ui-datatable .ui-datatable-data>tr.ui-state-highlight {
+	background-color: #009688;
+}
+
+body .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active
+	{
+	background-color: #009688;
+}
+
+body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem.ui-state-active {
+	background-color: #009688;
+	border: 1px solid #009688;
+}
+
+body .ui-inputfield {
+	border: 1px solid #009688;
+}
+
+body .ui-button {
+	background-color: #009688;
+	color: #fff;
+	border: 1px solid #009688;
+}
+
+body .ui-button.ui-state-hover {
+	background-color: #009688;
+	border-color: #009688;
+}
+
+body .ui-growl .ui-growl-item-container.ui-growl-info {
+	background-color: #009688;
+	border: 0 none;
+	color: #fff;
+}
+
+body .ui-datatable thead th.ui-state-active {
+	background-color: #009688;
+	color: #fff;
 }
 </style>
 <h:body>
@@ -25,7 +90,9 @@ body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 				onclick="PF('createAppoimentDialog').show()" />
 			<p:menuitem value="Patients" url="/patients-ui/patient.xhtml" />
 		</p:tabMenu>
-		<!-- Appoiment creation pop-up -->
+
+
+		<!-- Appoiment creation dialog -->
 		<p:dialog header="Create Appoiment" widgetVar="createAppoimentDialog"
 			minHeight="40" modal="true">
 			<p:panelGrid columns="2">
@@ -77,40 +144,61 @@ body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 			selection="#{appoimentController.model.selectedAppoiment}"
 			selectionMode="single" rowKey="#{appoiment.id}"
 			binding="#{appoimentController.model.appoimentsTable}"
-			id="appoimentsTable" paginator="true"
+			id="appoimentsTable" paginator="true" widgetVar="appoiments"
 			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="5,10,15" style="width:80%; margin-left:10% ">
+			rows="25" style="width:80%; margin-left:10% "
+			filteredValue="#{appoimentController.model.filteredAppoiments}">
 
-			<p:column headerText="Id">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="PF('appoiments').filter()"
+						style="width:150px" placeholder="Enter keyword" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column headerText="Id" sortBy="#{appoiment.id}"
+				filterBy="#{appoiment.id}" filterStyle="display:none">
 				<h:outputText value="#{appoiment.id}" />
 			</p:column>
 
-			<p:column headerText="Appoiment Type">
+			<p:column headerText="Appoiment Type"
+				sortBy="#{appoiment.appoimentType}"
+				filterBy="#{appoiment.appoimentType}" filterStyle="display:none">
 				<h:outputText value="#{appoiment.appoimentType}" />
 			</p:column>
 
-			<p:column headerText="Appoiment Status">
+			<p:column headerText="Appoiment Status"
+				sortBy="#{appoiment.appoimentStatus}"
+				filterBy="#{appoiment.appoimentStatus}" filterStyle="display:none">
 				<h:outputText value="#{appoiment.appoimentStatus}" />
 			</p:column>
-			<p:column headerText="Start Time">
+			<p:column headerText="Start Time" sortBy="#{appoiment.startTime}"
+				filterBy="#{appoiment.startTime}" filterStyle="display:none">
 				<h:outputText value="#{appoiment.startTime}">
 					<f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
 				</h:outputText>
 			</p:column>
-			<p:column headerText="End Time">
+			<p:column headerText="End Time" sortBy="#{appoiment.endTime}"
+				filterBy="#{appoiment.endTime}" filterStyle="display:none">
 				<h:outputText value="#{appoiment.endTime}">
 					<f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
 				</h:outputText>
 			</p:column>
 
-			<p:column headerText="Appoiment Description" style="width:100px">
+			<p:column headerText="Appoiment Description" style="width:100px"
+				sortBy="#{appoiment.appoimentDescription}"
+				filterBy="#{appoiment.appoimentDescription}"
+				filterStyle="display:none">
 				<h:outputText value="#{appoiment.appoimentDescription}" />
 			</p:column>
-			<p:column headerText="Patient ID">
+			<p:column headerText="Patient ID" sortBy="#{appoiment.patient.id}"
+				filterBy="#{appoiment.patient.id}" filterStyle="display:none">
 				<h:outputText value="#{appoiment.patient.id}" />
 			</p:column>
 
-			<p:column>
+			<p:column style="width:55px">
 				<p:commandLink oncomplete="PF('deleteDialog').show();"
 					style="display: block; width:20%; margin-left:40%">
 					<h:panelGroup styleClass="pi pi-trash"
@@ -119,7 +207,7 @@ body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 						target="#{appoimentController.model.selectedAppoiment}" />
 				</p:commandLink>
 			</p:column>
-			<p:column>
+			<p:column style="width:55px">
 
 				<p:commandLink oncomplete="PF('editAppoimentDialog').show();"
 					style="display: block; width:20%; margin-left:40%"

@@ -27,6 +27,10 @@ public class AppoimentModel {
 	private boolean initFromDB;
 
 	private AppoimentDto selectedAppoiment;
+	
+	private List<AppoimentDto> patientAppoiments;
+	
+	private List<AppoimentDto> filteredAppoiments;
 
 	public List<AppoimentDto> getAppoiments() {
 		return appoiments;
@@ -82,6 +86,22 @@ public class AppoimentModel {
 
 	public void setUpdatedAppoiment(AppoimentDto updatedAppoiment) {
 		this.updatedAppoiment = updatedAppoiment;
+	}
+
+	public List<AppoimentDto> getPatientAppoiments() {
+		return patientAppoiments;
+	}
+
+	public void setPatientAppoiments(List<AppoimentDto> patientAppoiments) {
+		this.patientAppoiments = patientAppoiments;
+	}
+
+	public List<AppoimentDto> getFilteredAppoiments() {
+		return filteredAppoiments;
+	}
+
+	public void setFilteredAppoiments(List<AppoimentDto> filteredAppoiments) {
+		this.filteredAppoiments = filteredAppoiments;
 	}
 
 

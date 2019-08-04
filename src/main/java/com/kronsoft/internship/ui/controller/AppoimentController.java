@@ -1,7 +1,9 @@
 package com.kronsoft.internship.ui.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -15,14 +17,20 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.event.RowEditEvent;
 
 import com.kronsoft.internship.ui.model.AppoimentModel;
+import com.kronsoft.internship.ui.model.PatientModel;
 import com.kronsoft.internship.ui.rest.AppoimentRestService;
 import com.kronsoft.internship.ui.rest.dto.AppoimentDto;
+import com.kronsoft.internship.ui.rest.dto.PatientDto;
 
 @ManagedBean
 @RequestScoped
 public class AppoimentController {
 	@ManagedProperty(value = "#{appoimentModel}")
 	private AppoimentModel model;
+
+	
+	@ManagedProperty(value = "#{patientModel}")
+	private PatientModel modelPatient;
 
 	private static AppoimentRestService appoimentRestService = AppoimentRestService.getInstance();
 	private static final Logger LOGGER = LogManager.getLogger(AppoimentController.class);
@@ -70,6 +78,24 @@ public class AppoimentController {
 		model.setUpdatedAppoiment(new AppoimentDto());
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Edit canceled!"));
 	}
+	public PatientModel getModelPatient() {
+		return modelPatient;
+	}
+	public void setModelPatient(PatientModel modelPatient) {
+		this.modelPatient = modelPatient;
+	}
 
-
+	public void findPatientAppoiments() {
+//		PatientDto patient=modelPatient.getSelectedPatient();
+//		List<AppoimentDto> appoiments=appoimentRestService.showPatientAppoiments(patient);
+//		model.setAppoiments(appoiments);
+		
+		PatientDto patient=modelPatient.getSelectedPatient();
+		List<AppoimentDto>appoiments=new ArrayList<AppoimentDto>();
+		Stream<AppoimentDto>appoimentsStream= model.getAppoiments().stream().filter(appoiment->appoiment.getPatient().getId()==patient.getId());
+		
+		appoimentsStream.forEach(appoiment->appoiments.add(appoiment));
+		model.setPatientAppoiments(appoiments);
+		
+	}
 }

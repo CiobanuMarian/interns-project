@@ -14,13 +14,71 @@
 	margin-left: 8px;
 }
 
+
+body .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+    background-color: #009688;
+    color: #fff
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+	color: #009688;
+}
+
+body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
+    background-color: #009688;
+    color: #fff;
+}
+body .ui-selectonemenu.ui-state-focus:not(.ui-state-error) {
+    border-color: #009688;
+}
+body .ui-datepicker .ui-datepicker-calendar td a.ui-state-active {
+    background-color: #009688;
+    color: #fff;
+}
 body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 	color: black;
+}
+
+body .ui-datatable .ui-datatable-data>tr.ui-state-highlight {
+	background-color: #009688;
+}
+
+
+body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem.ui-state-active {
+	background-color: #009688;
+	border: 1px solid #009688;
+}
+
+body .ui-inputfield {
+	border: 1px solid #009688;
+}
+
+body .ui-button {
+	background-color: #009688;
+	color: #fff;
+	border: 1px solid #009688;
+}
+
+body .ui-button.ui-state-hover {
+	background-color: #009688;
+	border-color: #009688;
+}
+
+body .ui-growl .ui-growl-item-container.ui-growl-info {
+	background-color: #009688;
+	border: 0 none;
+	color: #fff;
+}
+
+body .ui-datatable thead th.ui-state-active {
+	background-color: #009688;
+	color: #fff;
 }
 </style>
 <h:body>
 
 	<h:form id="form">
+
 
 		<p:tabMenu style="margin-left:10%; width:80%">
 			<p:menuitem value="Add Patient" onclick="PF('createDialog').show()" />
@@ -38,13 +96,14 @@ body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 				<p:inputText value="#{patientController.model.newPatient.lastName}" />
 
 				<h:outputText value="Birth Date" />
-				<p:datePicker id="popup"
-					value="#{patientController.model.newPatient.birthDate}" />
+				<p:datePicker
+					value="#{patientController.model.newPatient.birthDate}">
 
+				</p:datePicker>
 				<h:outputText value="PIN" />
-				<p:inputText value="#{patientController.model.newPatient.pin}" >
-				   <f:validateLength minimum="13" maximum="13"  />
-				   </p:inputText>
+				<p:inputText value="#{patientController.model.newPatient.pin}">
+					<f:validateLength minimum="13" maximum="13" />
+				</p:inputText>
 
 				<h:outputText value="Sex" />
 				<p:selectOneMenu value="#{patientController.model.newPatient.sex}">
@@ -58,7 +117,10 @@ body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 
 				<h:outputText value="Phone Number" />
 				<p:inputText
-					value="#{patientController.model.newPatient.phoneNumber}" />
+					onkeydown="return event.keyCode &gt;= 48 &amp;&amp; event.keyCode &lt;= 57 || event.keyCode == 8"
+					value="#{patientController.model.newPatient.phoneNumber}">
+					<f:validateLength minimum="10" maximum="10" />
+				</p:inputText>
 
 				<p:commandButton value="Create" style="margin-left:15%"
 					action="#{patientController.createPatient}"
@@ -76,8 +138,9 @@ body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 			widgetVar="patients" id="patientTable" rowIndexVar="patient.id"
 			binding="#{patientController.model.patientTable}"
 			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rowsPerPageTemplate="5,10,15" style="margin-left:10%; width:80%"
+			rows="20"  style="margin-left:10%; width:80%"
 			filteredValue="#{patientController.model.filteredPatients}">
+
 
 			<f:facet name="header">
 				<p:outputPanel>
@@ -87,48 +150,57 @@ body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 				</p:outputPanel>
 			</f:facet>
 
-			<p:column headerText="ID" sortBy="#{patient.id}" filterBy="#{patient.id}" filterStyle="display:none" >
+			<p:column headerText="ID" sortBy="#{patient.id}"
+				filterBy="#{patient.id}" filterStyle="display:none">
 				<h:outputText value="#{patient.id}" />
 			</p:column>
 
-			<p:column headerText="First Name" filterBy="#{patient.firstName}" filterStyle="display:none" >
+			<p:column headerText="First Name" filterBy="#{patient.firstName}"
+				filterStyle="display:none">
 				<h:outputText value="#{patient.firstName}" />
 			</p:column>
 
-			<p:column headerText="Last Name" filterBy="#{patient.lastName}" filterStyle="display:none" >
+			<p:column headerText="Last Name" filterBy="#{patient.lastName}"
+				filterStyle="display:none">
 				<h:outputText value="#{patient.lastName}" />
 			</p:column>
 
-			<p:column headerText="Birth Date" filterBy="#{patient.birthDate}" filterStyle="display:none" >
+			<p:column headerText="Birth Date" filterBy="#{patient.birthDate}"
+				filterStyle="display:none">
 				<h:outputText value="#{patient.birthDate}">
 					<f:convertDateTime type="date" />
 				</h:outputText>
 			</p:column>
 
-			<p:column headerText="SSN" style="width:100px" filterBy="#{patient.pin}" filterStyle="display:none" >
+			<p:column headerText="SSN" style="width:100px"
+				filterBy="#{patient.pin}" filterStyle="display:none">
 				<h:outputText value="#{patient.pin}" />
 			</p:column>
 
-			<p:column headerText="Sex" filterBy="#{patient.sex}" filterStyle="display:none" >
+			<p:column headerText="Sex" filterBy="#{patient.sex}"
+				filterStyle="display:none">
 				<h:outputText value="#{patient.sex}" />
 			</p:column>
 
-			<p:column headerText="Country" filterBy="#{patient.country}" filterStyle="display:none">
+			<p:column headerText="Country" filterBy="#{patient.country}"
+				filterStyle="display:none">
 				<h:outputText value="#{patient.country}" />
 			</p:column>
 
-			<p:column headerText="City" filterBy="#{patient.city}" filterStyle="display:none">
+			<p:column headerText="City" filterBy="#{patient.city}"
+				filterStyle="display:none">
 				<h:outputText value="#{patient.city}" />
 			</p:column>
 
-			<p:column headerText="Phone Number" filterBy="#{patient.phoneNumber}" filterStyle="display:none">
+			<p:column headerText="Phone Number" filterBy="#{patient.phoneNumber}"
+				filterStyle="display:none">
 				<h:outputText value="#{patient.phoneNumber}" />
 			</p:column>
 
 			<p:column style="width:55px">
 				<p:commandLink oncomplete="PF('editPatientDialog').show();"
 					style="display: block; width:20%; margin-left:40%"
-					update="form:dialogUpdate">
+					update="form:patientDialogUpdate">
 					<h:panelGroup styleClass="fa fa-edit"
 						style="color: black;display: block; text-align:center; " />
 					<f:setPropertyActionListener value="#{patient}"
@@ -136,21 +208,48 @@ body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 				</p:commandLink>
 			</p:column>
 
+			<p:column style="width:55px">
+				<p:commandLink oncomplete="PF('deletePatientDialog').show();"
+					style="display: block; width:20%; margin-left:40%">
+					<h:panelGroup styleClass="pi pi-trash"
+						style="color: black;display: block; text-align:center; " />
+					<f:setPropertyActionListener value="#{patient}"
+						target="#{patientController.model.selectedPatient}" />
+				</p:commandLink>
+			</p:column>
+
+
+			<p:column style="width:55px">
+				<p:commandLink oncomplete="PF('viewPatientAppoiments').show();"
+				action="#{appoimentController.findPatientAppoiments}"
+					style="display: block; width:20%; margin-left:40%"
+					update="form:appoimentsDialog">
+					<h:panelGroup styleClass="pi pi-list"
+						style="color: black;display: block; text-align:center; " />
+					<f:setPropertyActionListener value="#{patient}"
+						target="#{patientController.model.selectedPatient}" />
+				</p:commandLink>
+			</p:column>
+
 		</p:dataTable>
 
-		<p:dialog header="Confirm Delete?" widgetVar="deleteDialog"
+
+		<!--  Delete Dialog for patient -->
+		<p:dialog header="Confirm Delete?" widgetVar="deletePatientDialog"
 			minHeight="40" modal="true">
 			<p:commandButton value="Yes" style="margin-right:20px;"
 				action="#{patientController.deletePatient}"
-				oncomplete="PF('deleteDialog').hide();" update="patientTable msgs">
+				oncomplete="PF('deletePatientDialog').hide();" update="patientTable msgs">
 			</p:commandButton>
 
-			<p:commandButton value="No" oncomplete="PF('deleteDialog').hide();"
+			<p:commandButton value="No" oncomplete="PF('deletePatientDialog').hide();"
 				style="margin-right:20px;" />
 		</p:dialog>
-		<!--  Edit patient pop-up -->
+
+
+	<!--  Edit patient pop-up -->
 		<p:dialog header="Edit Patient" widgetVar="editPatientDialog"
-			id="dialogUpdate" minHeight="40" modal="true">
+			id="patientDialogUpdate" minHeight="40" modal="true">
 			<p:panelGrid columns="2">
 				<h:outputText value="First Name" />
 				<p:inputText
@@ -192,6 +291,44 @@ body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 			</p:panelGrid>
 		</p:dialog>
 
+
+		<!--  Appoiments view dialog for the selected patient -->
+		<p:dialog widgetVar="viewPatientAppoiments" modal="true"
+		width="50%"
+			id="appoimentsDialog">
+			<p:dataTable var="appoiment"
+				value="#{appoimentController.model.patientAppoiments}"
+				selection="#{appoimentController.model.selectedAppoiment}"
+				selectionMode="single" rowKey="#{appoiment.id}"
+				id="appoimentsTable">
+				<p:column headerText="Id">
+					<h:outputText value="#{appoiment.id}" />
+				</p:column>
+
+				<p:column headerText="Appoiment Type">
+					<h:outputText value="#{appoiment.appoimentType}" />
+				</p:column>
+
+				<p:column headerText="Appoiment Status">
+					<h:outputText value="#{appoiment.appoimentStatus}" />
+				</p:column>
+				<p:column headerText="Start Time">
+					<h:outputText value="#{appoiment.startTime}">
+						<f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="End Time">
+					<h:outputText value="#{appoiment.endTime}">
+						<f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Appoiment Description" style="width:100px">
+					<h:outputText value="#{appoiment.appoimentDescription}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:dialog>
 	</h:form>
 </h:body>
 </html>
