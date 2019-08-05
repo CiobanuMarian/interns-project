@@ -89,7 +89,7 @@ body .ui-datatable thead th.ui-state-active {
 
 		<p:tabMenu style="margin-left:10%; width:80%">
 			<p:menuitem value="Add Patient" onclick="PF('createDialog').show()" />
-			<p:menuitem value="Appoiments" url="/patients-ui/appoiment.xhtml" />
+			<p:menuitem value="Appointments" url="/patients-ui/appointment.xhtml" />
 		</p:tabMenu>
 
 		<!-- Patient creation pop-up  -->
@@ -176,10 +176,10 @@ body .ui-datatable thead th.ui-state-active {
 		<p:dataTable var="patient" value="#{patientController.model.patients}"
 			selection="#{patientController.model.selectedPatient}"
 			selectionMode="single" paginator="true" rowKey="#{patient.id}"
-			widgetVar="patients" id="patientTable" rowIndexVar="patient.id"
+			widgetVar="patients" id="patientTable"
 			binding="#{patientController.model.patientTable}"
 			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rows="20" style="margin-left:10%; width:80%"
+			rows="25" style="margin-left:10%; width:80%"
 			filteredValue="#{patientController.model.filteredPatients}">
 
 
@@ -261,10 +261,10 @@ body .ui-datatable thead th.ui-state-active {
 
 
 			<p:column style="width:55px">
-				<p:commandLink oncomplete="PF('viewPatientAppoiments').show();"
-					action="#{appoimentController.findPatientAppoiments}"
+				<p:commandLink oncomplete="PF('viewPatientAppointments').show();"
+					action="#{appointmentController.findPatientAppointments}"
 					style="display: block; width:20%; margin-left:40%"
-					update="form:appoimentsDialog">
+					update="form:appointmentsDialog">
 					<h:panelGroup styleClass="pi pi-list"
 						style="color: black;display: block; text-align:center; " />
 					<f:setPropertyActionListener value="#{patient}"
@@ -335,37 +335,37 @@ body .ui-datatable thead th.ui-state-active {
 		</p:dialog>
 
 
-		<!--  Appoiments view dialog for the selected patient -->
-		<p:dialog widgetVar="viewPatientAppoiments" modal="true" width="50%"
-			id="appoimentsDialog">
-			<p:dataTable var="appoiment"
-				value="#{appoimentController.model.patientAppoiments}"
-				selection="#{appoimentController.model.selectedAppoiment}"
-				selectionMode="single" rowKey="#{appoiment.id}" id="appoimentsTable">
+		<!--  Appointments view dialog for the selected patient -->
+		<p:dialog widgetVar="viewPatientAppointments" modal="true" width="50%"
+			id="appointmentsDialog">
+			<p:dataTable var="appointment"
+				value="#{appointmentController.model.patientAppointments}"
+				selection="#{appointmentController.model.selectedAppointment}"
+				selectionMode="single" rowKey="#{appointment.id}" id="appointmentsTable">
 				<p:column headerText="Id">
-					<h:outputText value="#{appoiment.id}" />
+					<h:outputText value="#{appointment.id}" />
 				</p:column>
 
-				<p:column headerText="Appoiment Type">
-					<h:outputText value="#{appoiment.appoimentType}" />
+				<p:column headerText="Appointment Type">
+					<h:outputText value="#{appointment.appointmentType}" />
 				</p:column>
 
-				<p:column headerText="Appoiment Status">
-					<h:outputText value="#{appoiment.appoimentStatus}" />
+				<p:column headerText="Appointment Status">
+					<h:outputText value="#{appointment.appointmentStatus}" />
 				</p:column>
 				<p:column headerText="Start Time">
-					<h:outputText value="#{appoiment.startTime}">
+					<h:outputText value="#{appointment.startTime}">
 						<f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
 					</h:outputText>
 				</p:column>
 				<p:column headerText="End Time">
-					<h:outputText value="#{appoiment.endTime}">
+					<h:outputText value="#{appointment.endTime}">
 						<f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
 					</h:outputText>
 				</p:column>
 
-				<p:column headerText="Appoiment Description" style="width:100px">
-					<h:outputText value="#{appoiment.appoimentDescription}" />
+				<p:column headerText="Appointment Description" style="width:100px">
+					<h:outputText value="#{appointment.appointmentDescription}" />
 				</p:column>
 
 			</p:dataTable>

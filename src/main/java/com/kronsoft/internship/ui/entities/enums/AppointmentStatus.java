@@ -1,5 +1,5 @@
 package com.kronsoft.internship.ui.entities.enums;
 
-public enum AppoimentStatus {
+public enum AppointmentStatus {
 	CREATED, PLANNED, CONFIRMED, CLOSED, CANCELED
 }

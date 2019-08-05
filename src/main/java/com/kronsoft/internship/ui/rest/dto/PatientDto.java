@@ -26,14 +26,14 @@ public class PatientDto {
 
 	private String phoneNumber;
 
-	List<AppoimentDto> appoiments = new ArrayList<>();
+	List<AppointmentDto> appointments = new ArrayList<>();
 
-	public List<AppoimentDto> getAppoiments() {
-		return appoiments;
+	public List<AppointmentDto> getAppointments() {
+		return appointments;
 	}
 
-	public void setAppoiments(List<AppoimentDto> appoiments) {
-		this.appoiments = appoiments;
+	public void setAppointments(List<AppointmentDto> appointments) {
+		this.appointments = appointments;
 	}
 
 	public Long getId() {

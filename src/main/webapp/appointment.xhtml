@@ -6,7 +6,7 @@
 
 
 <h:head>
-	<title>Appoiments List</title>
+	<title>Appointments List</title>
 </h:head>
 
 <style type="text/css">
@@ -86,52 +86,52 @@ body .ui-datatable thead th.ui-state-active {
 <h:body>
 	<h:form id="form">
 		<p:tabMenu style="margin-left:10%; width:80%">
-			<p:menuitem value="Add Appoiment"
-				onclick="PF('createAppoimentDialog').show()" />
+			<p:menuitem value="Add Appointment"
+				onclick="PF('createAppointmentDialog').show()" />
 			<p:menuitem value="Patients" url="/patients-ui/patient.xhtml" />
 		</p:tabMenu>
 
 
-		<!-- Appoiment creation dialog -->
-		<p:dialog header="Create Appoiment" widgetVar="createAppoimentDialog"
+		<!-- Appointment creation dialog -->
+		<p:dialog header="Create Appointment" widgetVar="createAppointmentDialog"
 			minHeight="40" modal="true">
 			<p:panelGrid columns="2">
-				<h:outputText value="Appoiment Type" />
+				<h:outputText value="Appointment Type" />
 				<p:selectOneMenu
-					value="#{appoimentController.model.newAppoiment.appoimentType}">
-					<f:selectItems value="#{appoimentController.model.types}" />
+					value="#{appointmentController.model.newAppointment.appointmentType}">
+					<f:selectItems value="#{appointmentController.model.types}" />
 				</p:selectOneMenu>
-				<h:outputText value="Appoiment Status" />
+				<h:outputText value="Appointment Status" />
 				<p:selectOneMenu
-					value="#{appoimentController.model.newAppoiment.appoimentStatus}">
-					<f:selectItems value="#{appoimentController.model.statuses}" />
+					value="#{appointmentController.model.newAppointment.appointmentStatus}">
+					<f:selectItems value="#{appointmentController.model.statuses}" />
 				</p:selectOneMenu>
 				<h:outputText value="Start Time" />
 				<p:calendar
-					value="#{appoimentController.model.newAppoiment.startTime}"
+					value="#{appointmentController.model.newAppointment.startTime}"
 					pattern="MM/dd/yyyy HH:mm" />
 
 				<h:outputText value="End Time" />
 				<p:calendar
-					value="#{appoimentController.model.newAppoiment.endTime}"
+					value="#{appointmentController.model.newAppointment.endTime}"
 					pattern="MM/dd/yyyy HH:mm" />
 
-				<h:outputText value="Appoiment Description" />
+				<h:outputText value="Appointment Description" />
 				<p:inputText
-					value="#{appoimentController.model.newAppoiment.appoimentDescription}" />
+					value="#{appointmentController.model.newAppointment.appointmentDescription}" />
 
 				<h:outputText value="Patient ID" />
 				<p:selectOneMenu
-					value="#{appoimentController.model.newAppoiment.patient}"
+					value="#{appointmentController.model.newAppointment.patient}"
 					converter="#{patientConverter}">
 					<!-- We can set the itemLabel to any property from patient, maybe we can merge firstName and lastName somehow -->
 					<f:selectItems value="#{patientController.model.patients}"
 						var="patients" itemLabel="#{patients.id}" />
 				</p:selectOneMenu>
 				<p:commandButton value="Create" style="margin-left:15%"
-					action="#{appoimentController.createAppoiment}"
-					oncomplete="PF('createAppoimentDialog').hide();"
-					update="appoimentsTable, msgs" />
+					action="#{appointmentController.createAppointment}"
+					oncomplete="PF('createAppointmentDialog').hide();"
+					update="appointmentsTable, msgs" />
 				<p:commandButton value="Cancel" onclick="PF('createDialog').hide();"
 					style="margin-left:25%" />
 
@@ -139,63 +139,63 @@ body .ui-datatable thead th.ui-state-active {
 		</p:dialog>
 
 		<p:growl id="msgs" showDetail="true" />
-		<p:dataTable var="appoiment"
-			value="#{appoimentController.model.appoiments}"
-			selection="#{appoimentController.model.selectedAppoiment}"
-			selectionMode="single" rowKey="#{appoiment.id}"
-			binding="#{appoimentController.model.appoimentsTable}"
-			id="appoimentsTable" paginator="true" widgetVar="appoiments"
+		<p:dataTable var="appointment"
+			value="#{appointmentController.model.appointments}"
+			selection="#{appointmentController.model.selectedAppointment}"
+			selectionMode="single" rowKey="#{appointment.id}"
+			binding="#{appointmentController.model.appointmentsTable}"
+			id="appointmentsTable" paginator="true" widgetVar="appointments"
 			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			rows="25" style="width:80%; margin-left:10% "
-			filteredValue="#{appoimentController.model.filteredAppoiments}">
+			filteredValue="#{appointmentController.model.filteredAppointments}">
 
 
 			<f:facet name="header">
 				<p:outputPanel>
 					<h:outputText value="Search all fields:" />
-					<p:inputText id="globalFilter" onkeyup="PF('appoiments').filter()"
+					<p:inputText id="globalFilter" onkeyup="PF('appointments').filter()"
 						style="width:150px" placeholder="Enter keyword" />
 				</p:outputPanel>
 			</f:facet>
 
-			<p:column headerText="Id" sortBy="#{appoiment.id}"
-				filterBy="#{appoiment.id}" filterStyle="display:none">
-				<h:outputText value="#{appoiment.id}" />
+			<p:column headerText="Id" sortBy="#{appointment.id}"
+				filterBy="#{appointment.id}" filterStyle="display:none">
+				<h:outputText value="#{appointment.id}" />
 			</p:column>
 
-			<p:column headerText="Appoiment Type"
-				sortBy="#{appoiment.appoimentType}"
-				filterBy="#{appoiment.appoimentType}" filterStyle="display:none">
-				<h:outputText value="#{appoiment.appoimentType}" />
+			<p:column headerText="Appointment Type"
+				sortBy="#{appointment.appointmentType}"
+				filterBy="#{appointment.appointmentType}" filterStyle="display:none">
+				<h:outputText value="#{appointment.appointmentType}" />
 			</p:column>
 
-			<p:column headerText="Appoiment Status"
-				sortBy="#{appoiment.appoimentStatus}"
-				filterBy="#{appoiment.appoimentStatus}" filterStyle="display:none">
-				<h:outputText value="#{appoiment.appoimentStatus}" />
+			<p:column headerText="Appointment Status"
+				sortBy="#{appointment.appointmentStatus}"
+				filterBy="#{appointment.appointmentStatus}" filterStyle="display:none">
+				<h:outputText value="#{appointment.appointmentStatus}" />
 			</p:column>
-			<p:column headerText="Start Time" sortBy="#{appoiment.startTime}"
-				filterBy="#{appoiment.startTime}" filterStyle="display:none">
-				<h:outputText value="#{appoiment.startTime}">
+			<p:column headerText="Start Time" sortBy="#{appointment.startTime}"
+				filterBy="#{appointment.startTime}" filterStyle="display:none">
+				<h:outputText value="#{appointment.startTime}">
 					<f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
 				</h:outputText>
 			</p:column>
-			<p:column headerText="End Time" sortBy="#{appoiment.endTime}"
-				filterBy="#{appoiment.endTime}" filterStyle="display:none">
-				<h:outputText value="#{appoiment.endTime}">
+			<p:column headerText="End Time" sortBy="#{appointment.endTime}"
+				filterBy="#{appointment.endTime}" filterStyle="display:none">
+				<h:outputText value="#{appointment.endTime}">
 					<f:convertDateTime pattern="MM/dd/yyyy HH:mm" />
 				</h:outputText>
 			</p:column>
 
-			<p:column headerText="Appoiment Description" style="width:100px"
-				sortBy="#{appoiment.appoimentDescription}"
-				filterBy="#{appoiment.appoimentDescription}"
+			<p:column headerText="Appointment Description" style="width:100px"
+				sortBy="#{appointment.appointmentDescription}"
+				filterBy="#{appointment.appointmentDescription}"
 				filterStyle="display:none">
-				<h:outputText value="#{appoiment.appoimentDescription}" />
+				<h:outputText value="#{appointment.appointmentDescription}" />
 			</p:column>
-			<p:column headerText="Patient ID" sortBy="#{appoiment.patient.id}"
-				filterBy="#{appoiment.patient.id}" filterStyle="display:none">
-				<h:outputText value="#{appoiment.patient.id}" />
+			<p:column headerText="Patient ID" sortBy="#{appointment.patient.id}"
+				filterBy="#{appointment.patient.id}" filterStyle="display:none">
+				<h:outputText value="#{appointment.patient.id}" />
 			</p:column>
 
 			<p:column style="width:55px">
@@ -204,18 +204,18 @@ body .ui-datatable thead th.ui-state-active {
 					<h:panelGroup styleClass="pi pi-trash"
 						style="color: black;display: block; text-align:center;" />
 					<f:setPropertyActionListener value="#{patient}"
-						target="#{appoimentController.model.selectedAppoiment}" />
+						target="#{appointmentController.model.selectedAppointment}" />
 				</p:commandLink>
 			</p:column>
 			<p:column style="width:55px">
 
-				<p:commandLink oncomplete="PF('editAppoimentDialog').show();"
+				<p:commandLink oncomplete="PF('editAppointmentDialog').show();"
 					style="display: block; width:20%; margin-left:40%"
 					update="form:dialogUpdate">
 					<h:panelGroup styleClass="fa fa-edit"
 						style="color: black;display: block; text-align:center;" />
-					<f:setPropertyActionListener value="#{appoiment}"
-						target="#{appoimentController.model.updatedAppoiment}" />
+					<f:setPropertyActionListener value="#{appointment}"
+						target="#{appointmentController.model.updatedAppointment}" />
 				</p:commandLink>
 			</p:column>
 		</p:dataTable>
@@ -223,51 +223,51 @@ body .ui-datatable thead th.ui-state-active {
 		<p:dialog header="Confirm Delete?" widgetVar="deleteDialog"
 			minHeight="40" modal="true">
 			<p:commandButton value="Yes" style="margin-right:20px;"
-				action="#{appoimentController.deleteAppoiment}"
+				action="#{appointmentController.deleteAppointment}"
 				oncomplete="PF('deleteDialog').hide();"
-				update="appoimentsTable msgs">
+				update="appointmentsTable msgs">
 			</p:commandButton>
 
 			<p:commandButton value="No" oncomplete="PF('deleteDialog').hide();"
 				style="margin-right:20px;" />
 		</p:dialog>
 
-		<!-- Appoiment Edit pop-up -->
-		<p:dialog header="Edit Appoiment" widgetVar="editAppoimentDialog"
+		<!-- Appointment Edit pop-up -->
+		<p:dialog header="Edit Appointment" widgetVar="editAppointmentDialog"
 			id="dialogUpdate" minHeight="40" modal="true">
 			<p:panelGrid columns="2">
-				<h:outputText value="Appoiment Status" />
+				<h:outputText value="Appointment Status" />
 				<p:selectOneMenu
-					value="#{appoimentController.model.updatedAppoiment.appoimentType}">
-					<f:selectItems value="#{appoimentController.model.types}" />
+					value="#{appointmentController.model.updatedAppointment.appointmentType}">
+					<f:selectItems value="#{appointmentController.model.types}" />
 				</p:selectOneMenu>
-				<h:outputText value="Appoiment Status" />
+				<h:outputText value="Appointment Status" />
 				<p:selectOneMenu
-					value="#{appoimentController.model.updatedAppoiment.appoimentStatus}">
-					<f:selectItems value="#{appoimentController.model.statuses}" />
+					value="#{appointmentController.model.updatedAppointment.appointmentStatus}">
+					<f:selectItems value="#{appointmentController.model.statuses}" />
 				</p:selectOneMenu>
 				<h:outputText value="Start Time" />
 				<p:calendar
-					value="#{appoimentController.model.updatedAppoiment.startTime}"
+					value="#{appointmentController.model.updatedAppointment.startTime}"
 					pattern="MM/dd/yyyy HH:mm" />
 
 				<h:outputText value="End Time" />
 				<p:calendar
-					value="#{appoimentController.model.updatedAppoiment.endTime}"
+					value="#{appointmentController.model.updatedAppointment.endTime}"
 					pattern="MM/dd/yyyy HH:mm" />
 
 
-				<h:outputText value="Appoiment Description" />
+				<h:outputText value="Appointment Description" />
 				<p:inputText
-					value="#{appoimentController.model.updatedAppoiment.appoimentDescription}" />
+					value="#{appointmentController.model.updatedAppointment.appointmentDescription}" />
 
 
 				<p:commandButton value="Save Changes" style="margin-left:15%"
-					action="#{appoimentController.updateAppoiment}"
-					oncomplete="PF('editAppoimentDialog').hide();"
-					update="appoimentsTable, msgs" />
+					action="#{appointmentController.updateAppointment}"
+					oncomplete="PF('editAppointmentDialog').hide();"
+					update="appointmentsTable, msgs" />
 				<p:commandButton value="Cancel"
-					onclick="PF('editAppoimentDialog').hide();" style="margin-left:25%" />
+					onclick="PF('editAppointmentDialog').hide();" style="margin-left:25%" />
 			</p:panelGrid>
 		</p:dialog>
 	</h:form>

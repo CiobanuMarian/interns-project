@@ -31,7 +31,7 @@ public class PatientRestService {
 		return INSTANCE;
 	}
 
-	public List<PatientDto> gellAllPatients() {
+	public List<PatientDto> getAllPatients() {
 		ResponseEntity<List<PatientDto>> responseEntity = restTemplate.exchange(HOSTNAME + "/patients", HttpMethod.GET,
 				null, new ParameterizedTypeReference<List<PatientDto>>() {
 				});

@@ -1,8 +1,5 @@
 package com.kronsoft.internship.ui.controller;
 
-import java.util.List;
-import java.util.Optional;
-
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -12,12 +9,9 @@ import javax.faces.context.FacesContext;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.RowEditEvent;
 
 import com.kronsoft.internship.ui.model.PatientModel;
 import com.kronsoft.internship.ui.rest.PatientRestService;
-import com.kronsoft.internship.ui.rest.dto.AppoimentDto;
 import com.kronsoft.internship.ui.rest.dto.PatientDto;
 
 @ManagedBean
@@ -32,7 +26,7 @@ public class PatientController {
 	@PostConstruct
 	public void init() {
 		if (!model.isInitFromDB()) {
-			model.setPatients(patientRestService.gellAllPatients());
+			model.setPatients(patientRestService.getAllPatients());
 			model.setInitFromDB(true);
 		}
 	}
@@ -48,10 +42,8 @@ public class PatientController {
 	}
 
 	public void createPatient() {
-
-		PatientDto createdPatient = model.getNewPatient();
 		try {
-			patientRestService.createPatient(createdPatient);
+			PatientDto createdPatient = patientRestService.createPatient(model.getNewPatient());
 			model.getPatients().add(createdPatient);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Created client succesfully!"));
 			LOGGER.info("Creating patient with id:" + createdPatient.getId());
