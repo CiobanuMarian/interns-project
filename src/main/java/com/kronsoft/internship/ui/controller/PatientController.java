@@ -49,11 +49,15 @@ public class PatientController {
 
 	public void createPatient() {
 
-		PatientDto createdPatient = patientRestService.createPatient(model.getNewPatient());
-		model.getPatients().add(createdPatient);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Created client succesfully!"));
-		LOGGER.info("Creating patient with id:"+createdPatient.getId());
-
+		PatientDto createdPatient = model.getNewPatient();
+		try {
+			patientRestService.createPatient(createdPatient);
+			model.getPatients().add(createdPatient);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Created client succesfully!"));
+			LOGGER.info("Creating patient with id:" + createdPatient.getId());
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Not all fields completed"));
+		}
 	}
 
 	public PatientModel getModel() {
@@ -65,7 +69,7 @@ public class PatientController {
 	}
 
 	public void updatePatient() {
-		PatientDto patientToBeUpdated= model.getUpdatedPatient();
+		PatientDto patientToBeUpdated = model.getUpdatedPatient();
 		patientRestService.updatePatient(patientToBeUpdated);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Changes Saved!"));
 	}

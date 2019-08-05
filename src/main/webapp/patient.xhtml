@@ -14,27 +14,30 @@
 	margin-left: 8px;
 }
 
-
-body .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
-    background-color: #009688;
-    color: #fff
-}
-
 body .ui-dialog .ui-dialog-titlebar {
 	color: #009688;
 }
 
-body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
-    background-color: #009688;
-    color: #fff;
+body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight
+	{
+	background-color: #009688;
+	color: #fff;
 }
-body .ui-selectonemenu.ui-state-focus:not(.ui-state-error) {
-    border-color: #009688;
+
+body .ui-paginator-rpp-options .ui-widget .ui-state-default .ui-corner-left .ui-state-focus
+	{
+	
 }
+
+body .ui-selectonemenu.ui-state-focus:not .ui-state-error {
+	border-color: #009688;
+}
+
 body .ui-datepicker .ui-datepicker-calendar td a.ui-state-active {
-    background-color: #009688;
-    color: #fff;
+	background-color: #009688;
+	color: #fff;
 }
+
 body .ui-datatable .ui-datatable-data>tr .ui-row-editor .ui-icon {
 	color: black;
 }
@@ -43,6 +46,10 @@ body .ui-datatable .ui-datatable-data>tr.ui-state-highlight {
 	background-color: #009688;
 }
 
+body .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active
+	{
+	background-color: #009688;
+}
 
 body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem.ui-state-active {
 	background-color: #009688;
@@ -88,40 +95,74 @@ body .ui-datatable thead th.ui-state-active {
 		<!-- Patient creation pop-up  -->
 		<p:dialog header="Create Patient" widgetVar="createDialog"
 			minHeight="40" modal="true">
-			<p:panelGrid columns="2">
+			<p:panelGrid columns="3">
 				<h:outputText value="First Name" />
-				<p:inputText value="#{patientController.model.newPatient.firstName}" />
+				<p:inputText value="#{patientController.model.newPatient.firstName}"
+					id="firstName">
+					<f:validator validatorId="nameValidator" />
+					<p:ajax event="keyup" update="firstNameValidatorMessage" />
+				</p:inputText>
+				<h:message for="firstName" style="color:red"
+					id="firstNameValidatorMessage" />
 
 				<h:outputText value="Last Name" />
-				<p:inputText value="#{patientController.model.newPatient.lastName}" />
-
-				<h:outputText value="Birth Date" />
-				<p:datePicker
-					value="#{patientController.model.newPatient.birthDate}">
-
-				</p:datePicker>
-				<h:outputText value="PIN" />
-				<p:inputText value="#{patientController.model.newPatient.pin}">
-					<f:validateLength minimum="13" maximum="13" />
+				<p:inputText value="#{patientController.model.newPatient.lastName}"
+					id="lastName">
+					<f:validator validatorId="nameValidator" />
+					<p:ajax event="keyup" update="lastNameValidator" />
 				</p:inputText>
+				<h:message for="lastName" style="color:red" id="lastNameValidator" />
+
+				<h:outputText value="Birth Date"  />
+				<p:datePicker id="birthDate" validatorMessage="Wrong Data"
+					value="#{patientController.model.newPatient.birthDate}">
+					<p:ajax event="keyup" update="birthDates" />
+				</p:datePicker>
+
+				<h:message for="birthDate" style="color:red" id="birthDates" />
+
+
+
+				<h:outputText value="PIN" />
+				<p:inputText value="#{patientController.model.newPatient.pin}"
+					id="pin">
+					<f:validator validatorId="pinValidator" />
+					<p:ajax event="keyup" update="pinValidatorMessage" />
+				</p:inputText>
+				<h:message for="pin" style="color:red" id="pinValidatorMessage" />
 
 				<h:outputText value="Sex" />
 				<p:selectOneMenu value="#{patientController.model.newPatient.sex}">
 					<f:selectItems value="#{patientController.model.sexes}" />
 				</p:selectOneMenu>
+				 <h:panelGroup />
+
 				<h:outputText value="City" />
-				<p:inputText value="#{patientController.model.newPatient.city}" />
+				<p:inputText value="#{patientController.model.newPatient.city}"
+					id="city">
+					<f:validator validatorId="nameValidator" />
+					<p:ajax event="keyup" update="cityValidatorMessage" />
+				</p:inputText>
+				<h:message for="city" style="color:red" id="cityValidatorMessage" />
 
 				<h:outputText value="Country" />
-				<p:inputText value="#{patientController.model.newPatient.country}" />
+				<p:inputText value="#{patientController.model.newPatient.country}"
+					id="country">
+					<f:validator validatorId="nameValidator" />
+					<p:ajax event="keyup" update="countryValidatorMessage" />
+				</p:inputText>
+				<h:message for="country" style="color:red"
+					id="countryValidatorMessage" />
 
 				<h:outputText value="Phone Number" />
-				<p:inputText
-					onkeydown="return event.keyCode &gt;= 48 &amp;&amp; event.keyCode &lt;= 57 || event.keyCode == 8"
+				<p:inputText id="phoneNumber"
 					value="#{patientController.model.newPatient.phoneNumber}">
-					<f:validateLength minimum="10" maximum="10" />
+					<f:validator validatorId="phoneNumberValidator" />
+					<p:ajax event="keyup" update="phoneNumberValidatorMessage" />
 				</p:inputText>
 
+				<h:message for="phoneNumber" style="color:red"
+					id="phoneNumberValidatorMessage" />
 				<p:commandButton value="Create" style="margin-left:15%"
 					action="#{patientController.createPatient}"
 					oncomplete="PF('createDialog').hide();" update="patientTable, msgs" />
@@ -138,7 +179,7 @@ body .ui-datatable thead th.ui-state-active {
 			widgetVar="patients" id="patientTable" rowIndexVar="patient.id"
 			binding="#{patientController.model.patientTable}"
 			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-			rows="20"  style="margin-left:10%; width:80%"
+			rows="20" style="margin-left:10%; width:80%"
 			filteredValue="#{patientController.model.filteredPatients}">
 
 
@@ -178,7 +219,7 @@ body .ui-datatable thead th.ui-state-active {
 			</p:column>
 
 			<p:column headerText="Sex" filterBy="#{patient.sex}"
-				filterStyle="display:none">
+				filterStyle="display:none" style="width:100px">
 				<h:outputText value="#{patient.sex}" />
 			</p:column>
 
@@ -205,7 +246,7 @@ body .ui-datatable thead th.ui-state-active {
 						style="color: black;display: block; text-align:center; " />
 					<f:setPropertyActionListener value="#{patient}"
 						target="#{patientController.model.updatedPatient}" />
-				</p:commandLink>
+				</p:commandLink>	
 			</p:column>
 
 			<p:column style="width:55px">
@@ -221,7 +262,7 @@ body .ui-datatable thead th.ui-state-active {
 
 			<p:column style="width:55px">
 				<p:commandLink oncomplete="PF('viewPatientAppoiments').show();"
-				action="#{appoimentController.findPatientAppoiments}"
+					action="#{appoimentController.findPatientAppoiments}"
 					style="display: block; width:20%; margin-left:40%"
 					update="form:appoimentsDialog">
 					<h:panelGroup styleClass="pi pi-list"
@@ -239,15 +280,17 @@ body .ui-datatable thead th.ui-state-active {
 			minHeight="40" modal="true">
 			<p:commandButton value="Yes" style="margin-right:20px;"
 				action="#{patientController.deletePatient}"
-				oncomplete="PF('deletePatientDialog').hide();" update="patientTable msgs">
+				oncomplete="PF('deletePatientDialog').hide();"
+				update="patientTable msgs">
 			</p:commandButton>
 
-			<p:commandButton value="No" oncomplete="PF('deletePatientDialog').hide();"
+			<p:commandButton value="No"
+				oncomplete="PF('deletePatientDialog').hide();"
 				style="margin-right:20px;" />
 		</p:dialog>
 
 
-	<!--  Edit patient pop-up -->
+		<!--  Edit patient pop-up -->
 		<p:dialog header="Edit Patient" widgetVar="editPatientDialog"
 			id="patientDialogUpdate" minHeight="40" modal="true">
 			<p:panelGrid columns="2">
@@ -293,14 +336,12 @@ body .ui-datatable thead th.ui-state-active {
 
 
 		<!--  Appoiments view dialog for the selected patient -->
-		<p:dialog widgetVar="viewPatientAppoiments" modal="true"
-		width="50%"
+		<p:dialog widgetVar="viewPatientAppoiments" modal="true" width="50%"
 			id="appoimentsDialog">
 			<p:dataTable var="appoiment"
 				value="#{appoimentController.model.patientAppoiments}"
 				selection="#{appoimentController.model.selectedAppoiment}"
-				selectionMode="single" rowKey="#{appoiment.id}"
-				id="appoimentsTable">
+				selectionMode="single" rowKey="#{appoiment.id}" id="appoimentsTable">
 				<p:column headerText="Id">
 					<h:outputText value="#{appoiment.id}" />
 				</p:column>
