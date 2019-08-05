@@ -113,15 +113,13 @@ body .ui-datatable thead th.ui-state-active {
 				</p:inputText>
 				<h:message for="lastName" style="color:red" id="lastNameValidator" />
 
-				<h:outputText value="Birth Date"  />
-				<p:datePicker id="birthDate" validatorMessage="Wrong Data"
+				<h:outputText value="Birth Date" />
+					<p:datePicker id="birthDate" validatorMessage="Invalid Data"
 					value="#{patientController.model.newPatient.birthDate}">
-					<p:ajax event="keyup" update="birthDates" />
+					<p:ajax event="keyup" update="birthDateValidatorMessage" />
 				</p:datePicker>
-
-				<h:message for="birthDate" style="color:red" id="birthDates" />
-
-
+				<h:message for="birthDate" style="color:red"
+					id="birthDateValidatorMessage" />
 
 				<h:outputText value="PIN" />
 				<p:inputText value="#{patientController.model.newPatient.pin}"
@@ -135,7 +133,7 @@ body .ui-datatable thead th.ui-state-active {
 				<p:selectOneMenu value="#{patientController.model.newPatient.sex}">
 					<f:selectItems value="#{patientController.model.sexes}" />
 				</p:selectOneMenu>
-				 <h:panelGroup />
+				<h:panelGroup />
 
 				<h:outputText value="City" />
 				<p:inputText value="#{patientController.model.newPatient.city}"
@@ -246,7 +244,7 @@ body .ui-datatable thead th.ui-state-active {
 						style="color: black;display: block; text-align:center; " />
 					<f:setPropertyActionListener value="#{patient}"
 						target="#{patientController.model.updatedPatient}" />
-				</p:commandLink>	
+				</p:commandLink>
 			</p:column>
 
 			<p:column style="width:55px">
@@ -291,39 +289,83 @@ body .ui-datatable thead th.ui-state-active {
 
 
 		<!--  Edit patient pop-up -->
+
 		<p:dialog header="Edit Patient" widgetVar="editPatientDialog"
 			id="patientDialogUpdate" minHeight="40" modal="true">
-			<p:panelGrid columns="2">
+			<p:panelGrid columns="3">
 				<h:outputText value="First Name" />
-				<p:inputText
-					value="#{patientController.model.updatedPatient.firstName}" />
+				<p:inputText id="firstNameEdit"
+					value="#{patientController.model.updatedPatient.firstName}">
+					<f:validator validatorId="nameValidator" />
+					<p:ajax event="keyup" update="firstNameEditValidatorMessage" />
+				</p:inputText>
+				<h:message for="firstNameEdit" style="color:red"
+					id="firstNameEditValidatorMessage" />
+
 
 				<h:outputText value="Last Name" />
-				<p:inputText
-					value="#{patientController.model.updatedPatient.lastName}" />
+				<p:inputText id="lastNameEdit"
+					value="#{patientController.model.updatedPatient.lastName}">
+					<f:validator validatorId="nameValidator" />
+					<p:ajax event="keyup" update="lastNameEditValidatorMessage" />
+				</p:inputText>
+				<h:message for="lastNameEdit" style="color:red"
+					id="lastNameEditValidatorMessage" />
+
 
 				<h:outputText value="Birth Date" />
-				<p:datePicker
-					value="#{patientController.model.updatedPatient.birthDate}" />
+				<p:datePicker id="birthDateEdit" validatorMessage="Invalid Data"
+					value="#{patientController.model.updatedPatient.birthDate}">
+					<p:ajax event="keyup" update="birthDateEditValidatorMessage" />
+				</p:datePicker>
+				<h:message for="birthDateEdit" style="color:red"
+					id="birthDateEditValidatorMessage" />
+
 
 				<h:outputText value="PIN" />
-				<p:inputText value="#{patientController.model.updatedPatient.pin}" />
+				<p:inputText value="#{patientController.model.updatedPatient.pin}"
+					id="pinEdit">
+					<f:validator validatorId="pinValidator" />
+					<p:ajax event="keyup" update="pinEditValidatorMessage" />
+				</p:inputText>
+				<h:message for="pinEdit" style="color:red"
+					id="pinEditValidatorMessage" showDetail="false" />
 
 				<h:outputText value="Sex" />
 				<p:selectOneMenu
 					value="#{patientController.model.updatedPatient.sex}">
 					<f:selectItems value="#{patientController.model.sexes}" />
 				</p:selectOneMenu>
+				<h:panelGroup />
+
 				<h:outputText value="City" />
-				<p:inputText value="#{patientController.model.updatedPatient.city}" />
+				<p:inputText value="#{patientController.model.updatedPatient.city}"
+					id="cityEdit">
+					<f:validator validatorId="nameValidator" />
+					<p:ajax event="keyup" update="cityEditValidatorMessage" />
+				</p:inputText>
+				<h:message for="cityEdit" style="color:red"
+					id="cityEditValidatorMessage" />
+
 
 				<h:outputText value="Country" />
-				<p:inputText
-					value="#{patientController.model.updatedPatient.country}" />
+				<p:inputText id="countryEdit"
+					value="#{patientController.model.updatedPatient.country}">
+					<f:validator validatorId="nameValidator" />
+					<p:ajax event="keyup" update="countryEditValidatorMessage" />
+				</p:inputText>
+				<h:message for="countryEdit" style="color:red"
+					id="countryEditValidatorMessage" />
 
 				<h:outputText value="Phone Number" />
-				<p:inputText
-					value="#{patientController.model.updatedPatient.phoneNumber}" />
+				<p:inputText id="phoneNumberEdit"
+					value="#{patientController.model.updatedPatient.phoneNumber}">
+					<f:validator validatorId="phoneNumberValidator" />
+					<p:ajax event="keyup" update="phoneNumberEditValidatorMessage" />
+				</p:inputText>
+				<h:message for="phoneNumberEdit" style="color:red"
+					id="phoneNumberEditValidatorMessage" />
+
 
 				<p:commandButton value="Save Changes" style="margin-left:15%"
 					action="#{patientController.updatePatient}"
@@ -341,7 +383,8 @@ body .ui-datatable thead th.ui-state-active {
 			<p:dataTable var="appointment"
 				value="#{appointmentController.model.patientAppointments}"
 				selection="#{appointmentController.model.selectedAppointment}"
-				selectionMode="single" rowKey="#{appointment.id}" id="appointmentsTable">
+				selectionMode="single" rowKey="#{appointment.id}"
+				id="appointmentsTable">
 				<p:column headerText="Id">
 					<h:outputText value="#{appointment.id}" />
 				</p:column>
